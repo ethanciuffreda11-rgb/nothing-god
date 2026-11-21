@@ -1,4 +1,4 @@
-"""God page plus the live party list.
+"""Monster-AI page plus the live party list.
 
 Roblox servers send a heartbeat with header X-Api-Key.
 The page reads GET /api/parties and never sees the key.
@@ -179,7 +179,7 @@ def main():
         raise SystemExit("Set NOTHING_API_KEY or create Nothing/.api-key")
     port = int(os.environ.get("PORT", "4173"))
     server = ThreadingHTTPServer(("0.0.0.0", port), Handler)
-    print("Nothing god page http://127.0.0.1:%s/" % port)
+    print("Nothing monster AI page http://127.0.0.1:%s/" % port)
     server.serve_forever()
 
 

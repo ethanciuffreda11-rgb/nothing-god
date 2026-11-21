@@ -15,11 +15,11 @@ const pickedDetail = document.querySelector("#picked-detail");
 
 let chosen = null;
 
-function playerLine(lobby) {
-  const people = lobby.players === 1 ? "1 player" : `${lobby.players} players`;
+function bodyLine(lobby) {
+  const people = lobby.players === 1 ? "1 player nearby" : `${lobby.players} players nearby`;
   const age = lobby.minutes === 1 ? "1 min" : `${lobby.minutes} min`;
   const world = lobby.world === 1 ? "Universe 1" : `Universe ${lobby.world}`;
-  return `${world} · ${people} · ${age}`;
+  return `Body in ${world} · ${people} · ${age}`;
 }
 
 function render(lobbies) {
@@ -31,7 +31,7 @@ function render(lobbies) {
   if (!lobbies.length) {
     const empty = document.createElement("li");
     empty.className = "empty";
-    empty.textContent = "No games are running. Press Play in Studio.";
+    empty.textContent = "No monster AIs are controlling a body.";
     list.append(empty);
     return;
   }
@@ -52,7 +52,7 @@ function render(lobbies) {
     `;
     button.querySelector(".code").textContent = lobby.id;
     button.querySelector(".form").textContent = FORM_LABEL[lobby.form] || lobby.form;
-    button.querySelector(".meta").textContent = playerLine(lobby);
+    button.querySelector(".meta").textContent = bodyLine(lobby);
     button.querySelector(".note").textContent = lobby.note;
     button.addEventListener("click", () => select(lobby, button));
     item.append(button);
@@ -68,7 +68,8 @@ function select(lobby, button) {
   button.setAttribute("aria-pressed", "true");
   picked.hidden = false;
   pickedName.textContent = lobby.id;
-  pickedDetail.textContent = `You are the boss in this lobby. Current universe: ${FORM_LABEL[lobby.form] || lobby.form}. ${playerLine(lobby)}.`;
+  const form = FORM_LABEL[lobby.form] || lobby.form;
+  pickedDetail.textContent = `This mind is on the site. The body it controls is in lobby ${lobby.id}, wearing ${form}. ${bodyLine(lobby)}.`;
 }
 
 async function load() {
@@ -77,11 +78,11 @@ async function load() {
     if (!response.ok) throw new Error(String(response.status));
     const lobbies = await response.json();
     if (!lobbies.length) {
-      status.textContent = "Connected. No parties yet.";
+      status.textContent = "Connected. No minds are attached.";
     } else if (lobbies.length === 1) {
-      status.textContent = "1 game alive";
+      status.textContent = "1 mind controlling a body";
     } else {
-      status.textContent = `${lobbies.length} games alive`;
+      status.textContent = `${lobbies.length} minds controlling bodies`;
     }
     render(lobbies);
   } catch (error) {
