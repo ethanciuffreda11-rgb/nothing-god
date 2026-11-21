@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: nothing-god
+    runtime: python
+    plan: free
+    buildCommand: python --version
+    startCommand: python server.py
+    healthCheckPath: /health
+    envVars:
+      - key: NOTHING_API_KEY
+        sync: false
+      - key: PYTHON_VERSION
+        value: "3.12.7"
